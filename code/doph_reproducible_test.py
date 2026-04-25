@@ -36,7 +36,7 @@ def run_full_test():
     print(f"  Средний effective_g_factor: {avg_g:.5f}")
     print(f"  LSB-галактики (20%): средняя стабильность {avg_lsb_stab:.1f}%")
     
-    # 2. JWST-стресс-тест (1000 галактик)
+    # 2. JWST-стресс-тест
     jwst_stab = []
     for i in range(1000):
         res = model.simulate_galaxy(num_patches=80, is_lsb=True)
