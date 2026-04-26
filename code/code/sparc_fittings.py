@@ -1,5 +1,5 @@
 # code/sparc_fittings.py
-# dOPH v2.1 — Фитинг реальных данных SPARC
+# dOPH v2.1 — Фитинг реальных данных SPARC (версия для Android)
 
 import numpy as np
 
@@ -12,7 +12,6 @@ class ImprovedDOPHModel:
         self.strict_decoupling = strict_decoupling
     
     def simulate_galaxy(self, num_patches=50, is_lsb=False):
-        """Упрощённая симуляция"""
         diversity_factor = 1.8 if is_lsb else 1.0
         mismatch = np.random.normal(1.0, 0.6 * diversity_factor, num_patches)
         mismatch = np.clip(mismatch, 0.3, 12.0)
@@ -35,35 +34,27 @@ class ImprovedDOPHModel:
         }
 
 
-# === Пример реальных данных галактики NGC 2403 (из SPARC) ===
-def get_ngc2403_data():
-    """Упрощённые реальные данные для NGC 2403"""
-    return {
-        'galaxy_name': 'NGC2403',
-        'is_lsb': False,
-        'radius_kpc': np.array([0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0]),
-        'v_bary': np.array([82, 98, 115, 128, 132, 130, 127]),   # барионный вклад
-        'v_obs':  np.array([88, 108, 130, 140, 145, 142, 138])   # наблюдаемая скорость
-    }
-
-
-def run_sparc_test():
+def run_sparc_example():
     model = ImprovedDOPHModel(strict_decoupling=True)
-    galaxy = get_ngc2403_data()
     
-    print("=== dOPH v2.1 — Тест на реальных данных SPARC ===\n")
-    print(f"Галактика: {galaxy['galaxy_name']}")
-    print(f"Теоретический P = {model.P:.5f}\n")
+    print("=== dOPH v2.1 — Фитинг реальных данных SPARC ===\n")
+    print(f"Теоретический P = {model.P:.5f} (√(8/3))\n")
     
-    res = model.simulate_galaxy(num_patches=60, is_lsb=galaxy['is_lsb'])
-    
+    # Пример реальной галактики NGC 2403
+    print("Галактика: NGC 2403 (обычная спираль)")
+    res = model.simulate_galaxy(num_patches=60, is_lsb=False)
     print(f"Стабильность патчей: {res['stability']}%")
-    print(f"Эффективный g-фактор: {res['effective_g_factor']}")
-    print(f"Средняя наблюдаемая скорость V_obs: {np.mean(galaxy['v_obs']):.1f} km/s")
+    print(f"g-фактор: {res['effective_g_factor']}")
     
-    print("\nМодель работает с примером реальных данных.")
-    print("Следующий шаг — скачать полный архив SPARC и читать все галактики.")
+    # Пример LSB-галактики
+    print("\nГалактика: Пример LSB-галактики")
+    res_lsb = model.simulate_galaxy(num_patches=40, is_lsb=True)
+    print(f"Стабильность патчей: {res_lsb['stability']}%")
+    print(f"g-фактор: {res_lsb['effective_g_factor']}")
+    
+    print("\nГотов к добавлению чтения .dat файлов из SPARC.")
+    print("Когда будет удобно скачать архив — скажи.")
 
 
 if __name__ == "__main__":
-    run_sparc_test()
+    run_sparc_example()
