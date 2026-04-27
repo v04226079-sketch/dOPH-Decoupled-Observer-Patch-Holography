@@ -78,6 +78,44 @@ dOPH v2.1 имеет строгое теоретическое обоснова�
 \bibitem{oph} B. Mueller, Observer Patch Holography (2024--2026).
 \bibitem{sparc} SPARC database, Lelli, McGaugh et al.
 \end{thebibliography}
+\section{Current Status of the Project / Текущий статус проекта}
 
+\subsection{Русская версия (для русскоязычных читателей)}
+
+К настоящему моменту в рамках проекта \textbf{dOPH} (Decoupled Observer Patch Holography) достигнуты следующие результаты:
+
+\begin{itemize}
+    \item Параметр $P$ переведён в строго теоретическое значение:
+    \[
+    P \equiv \sqrt{\frac{8}{3}} \approx 1.63299
+    \]
+    \item Декуплинг наблюдателя реализован строгим проекционным оператором.
+    \item Проведены тяжёлые синтетические тесты на 20\,000 галактиках: средняя стабильность модели \textbf{98.8\%} (минимум 98.0\%), для LSB-галактик — \textbf{98.7\%}.
+    \item Выполнен независимый тест на реальной ротационной кривой Млечного Пути (Eilers et al. 2019). Получено reduced $\chi^2 = \textbf{1.84}$ при фиксированном $P$.
+    \item Подготовлен черновик `sparc_fittings_draft_v4.py` для фитинга полного набора данных SPARC (175 галактик). Файл \texttt{Rotmod\_LTG.zip} размещён в папке \texttt{data/sparc/}.
+\end{itemize}
+
+Модель демонстрирует высокую устойчивость на синтетических данных и приемлемые результаты на тесте Млечного Пути. Переход к реальным данным SPARC технически подготовлен, однако полный фитинг пока не запущен из-за ограничений текущего окружения (Android). Дальнейшая работа будет продолжена при наличии подходящего вычислительного окружения.
+
+\subsection{English Version (for English-speaking readers)}
+
+As of April 27, 2026, the following results have been achieved within the \textbf{dOPH} (Decoupled Observer Patch Holography) project:
+
+\begin{itemize}
+    \item The parameter $P$ has been fixed to its theoretical value:
+    \[
+    P \equiv \sqrt{\frac{8}{3}} \approx 1.63299
+    \]
+    \item Decoupling of the observer is implemented via a strict projection operator.
+    \item Extensive synthetic tests were performed on 20,000 galaxies, yielding an average model stability of \textbf{98.8\%} (minimum 98.0\%), and \textbf{98.7\%} for low-surface-brightness (LSB) galaxies.
+    \item An independent test was conducted on the real Milky Way rotation curve (Eilers et al. 2019). A reduced $\chi^2 = \textbf{1.84}$ was obtained with the fixed value of $P$.
+    \item A draft fitting script `sparc_fittings_draft_v4.py` has been prepared for the full SPARC dataset (175 galaxies). The file \texttt{Rotmod\_LTG.zip} has been placed in the \texttt{data/sparc/} directory.
+\end{itemize}
+
+The model demonstrates high robustness on synthetic data and acceptable performance on the Milky Way test. 
+The transition to real observational data from SPARC is technically prepared, although the full fitting has not yet been executed due to current computational environment limitations (Android). 
+Further work will continue once a more suitable computing environment becomes available.
+
+% =====================================================
 \end{document}
 
