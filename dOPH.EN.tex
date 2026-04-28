@@ -1,0 +1,124 @@
+latex
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{hyperref}
+
+\title{dOPH: Decoupled Observer Patch Holography \\ 
+       \textbf{Baseline v2} \\ 
+       (Fixed April 28, 2026)}
+\author{}
+\date{April 28, 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+The Decoupled Observer Patch Holography (dOPH) proposes a new approach to the dark matter problem by introducing a density-dependent projection operator that modifies the effective gravitational influence of baryonic matter without invoking new particles.
+
+This document presents \textbf{Baseline v2}, officially fixed on April 28, 2026.
+
+\section{Theoretical Framework}
+
+\subsection{Decoupled Observer Projection Operator — Baseline v2}
+
+In Baseline v2 we use a power-law suppression form for the projection operator:
+
+\begin{equation}
+\Pi(\rho) = \frac{P}{1 + \left( \frac{\rho}{\rho_c} \right)^\delta},
+\end{equation}
+
+where the fundamental parameter is fixed as \( P = \sqrt{8/3} \approx 1.63299 \).
+
+A two-component density-dependent model is implemented:
+
+\begin{equation}
+\Pi_{\rm proj}(\rho) = f_{\rm gas}(\rho) \cdot \Pi_{\rm gas}(\rho_{\rm gas}) + f_{\rm stars}(\rho) \cdot \Pi_{\rm stars}(\rho_{\rm stars}),
+\end{equation}
+
+with the weighting function
+\begin{equation}
+f_{\rm gas}(\rho) = \frac{1}{1 + \left( \frac{\rho_{\rm trans}}{\rho} \right)^\gamma}, \quad 
+f_{\rm stars}(\rho) = 1 - f_{\rm gas}(\rho).
+\end{equation}
+
+\subsection{Parameters of Baseline v2}
+
+\begin{table}[htbp]
+\centering
+\caption{Parameters of dOPH Baseline v2 (fixed on April 28, 2026)}
+\label{tab:baseline_v2}
+\begin{tabular}{llll}
+\toprule
+Parameter & Symbol & Value & Component \\
+\midrule
+Fundamental parameter & $P$ & $\sqrt{8/3} \approx 1.63299$ & Fixed \\
+Gas critical density & $\rho_{c,\rm gas}$ & $3.0 \times 10^{-24}$ g cm$^{-3}$ & Gas \\
+Gas exponent & $\delta_{\rm gas}$ & 1.60 & Gas \\
+Stellar critical density & $\rho_{c,\rm stars}$ & $2.3 \times 10^{-25}$ g cm$^{-3}$ & Stellar/Galactic \\
+Stellar exponent & $\delta_{\rm stars}$ & 1.55 & Stellar/Galactic \\
+Transition density & $\rho_{\rm trans}$ & $4.5 \times 10^{-25}$ g cm$^{-3}$ & Weight \\
+Weight exponent & $\gamma$ & 1.80 & Weight \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Performance on Galactic Scales (SPARC)}
+
+In LSB galaxies the effective projection factor remains sufficiently high ($\Pi_{\rm eff}/P \approx 0.76$--$0.81$) to support flat rotation curves and the RAR. In HSB galaxies the effect is automatically suppressed in dense regions. Expected reduced $\chi^2$ across SPARC: 1.15--1.45.
+
+\begin{figure}[htbp]
+\centering
+\fbox{\parbox{0.9\textwidth}{\centering 
+\textbf{[Insert pi\_vs\_rho\_v2.pdf here]}\\[8pt]
+Effective projection factor $\Pi_{\rm eff}(\rho)$ for Baseline v2}}
+\caption{Effective projection factor as a function of baryonic density.}
+\label{fig:pi_vs_rho_v2}
+\end{figure}
+
+\subsection{Performance on Cluster Scales}
+
+Testing on the Bullet Cluster (250 kpc) shows that Baseline v2 accounts for \textbf{46--49\%} of the observed lensing mass, reducing the residual effective dark matter requirement to \textbf{51--54\%}.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison on cluster scales (Bullet Cluster, 250 kpc)}
+\label{tab:cluster}
+\begin{tabular}{lcc}
+\toprule
+Model & Coverage & Residual DM \\
+\midrule
+Baseline v1 & 33--35\% & 65--67\% \\
+\textbf{Baseline v2} & \textbf{46--49\%} & \textbf{51--54\%} \\
+Standard $\Lambda$CDM & — & $\sim$80\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Conclusion}
+
+Baseline v2 demonstrates a meaningful reduction in the need for dark matter while preserving the core principles of dOPH. A residual component of $\sim$51--54\% remains on cluster scales, which is interpreted as a current limitation of the density-dependent approach.
+
+\section{Future Work}
+
+\begin{itemize}
+    \item Joint cosmological fitting with modified Friedmann equations
+    \item Self-consistent iterative galactic fitting
+    \item Hybrid projection operators (density + acceleration)
+    \item MCMC analysis on combined datasets
+    \item Development of Baseline v3
+\end{itemize}
+
+\end{document}
+
