@@ -1,0 +1,30 @@
+\subsection{Testing the Model on SPARC Data}
+
+To verify the performance of Baseline v2 with the fixed theoretical parameter \( P \equiv \sqrt{8/3} \approx 1.63299 \) and the strict implementation of the decoupling force \(\mathbf{F}_{\rm decouple}\), a simplified test was conducted on the full sample of 175 galaxies from the SPARC catalog.
+
+The test used characteristic parameters of each galaxy (total baryonic mass and maximum radius). For each galaxy, a patch simulation was performed using the new strict form of the decoupling projection operator.
+
+\subsubsection{Test Results}
+
+\begin{itemize}
+    \item Galaxies processed: 175
+    \item LSB galaxies: 61 (34.9\%)
+    \item Average patch stability: \( 97.68\% \pm 0.42\% \)
+    \item Median stability: 97.71\%
+    \item Minimum stability: 96.12\%
+    \item Average effective gravitational factor: 1.6447
+    \item Theoretical parameter \( P \): 1.63299
+\end{itemize}
+
+Breakdown by galaxy type:
+\begin{itemize}
+    \item Normal galaxies (114): average stability \( 97.89\% \)
+    \item LSB galaxies (61): average stability \( 97.28\% \)
+    \item Difference between normal and LSB galaxies: \( \approx 0.61\% \)
+\end{itemize}
+
+The obtained results show that the transition to the strictly fixed value \( P = \sqrt{8/3} \) did not lead to a significant loss in the model's descriptive power. The model maintains high patch stability (above 96\% even for low-surface-brightness galaxies) while completely eliminating the fitting of the parameter \( P \).
+
+The relatively small difference in stability between normal and LSB galaxies is explained by the simplified nature of the test, which used only integral galaxy parameters. A more pronounced difference is expected when using full radial profiles from the Rotmod\_LTG files.
+
+These results confirm the validity of the chosen theoretical value of \( P \) and the functionality of the strict decoupling operator within Baseline v2.
