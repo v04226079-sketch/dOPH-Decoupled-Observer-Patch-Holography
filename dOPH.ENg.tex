@@ -28,3 +28,39 @@ The obtained results show that the transition to the strictly fixed value \( P =
 The relatively small difference in stability between normal and LSB galaxies is explained by the simplified nature of the test, which used only integral galaxy parameters. A more pronounced difference is expected when using full radial profiles from the Rotmod\_LTG files.
 
 These results confirm the validity of the chosen theoretical value of \( P \) and the functionality of the strict decoupling operator within Baseline v2.
+subsection{Theoretical Fixation of Parameter \( P \) and SPARC Validation}
+
+In the early development stages of the Decoupled Observer Patch Holography (dOPH) model, the parameter \( P \) was treated as a free phenomenological coefficient within the projection operator \(\Pi(\rho)\). Systematic fitting to the SPARC rotation curves consistently yielded an optimal value near \( P \approx 1.63094 \).
+
+Following detailed analysis, this value was found to be extremely close to the exact expression \( \sqrt{8/3} \approx 1.63299 \), with a relative difference of only $\sim$0.12--0.18\%. Starting from Baseline v2, the parameter \( P \) has been fixed as a fundamental theoretical constant of the theory:
+
+\begin{equation}
+P \equiv \sqrt{\frac{8}{3}} \approx 1.63299.
+\end{equation}
+
+This fixation is motivated by the geometric and informational structure of the model. In the framework of Observer Patch Holography, gravitational information is projected from a 2D holographic screen onto 3D space. The introduction of the decoupling axiom (local error correction on overlapping patches) leads to an effective geometric factor of \( 8/3 \), whose square root naturally gives the value of \( P \).
+
+To validate the performance of the new Baseline v2 with the strictly fixed \( P \) and the rigorous implementation of the decoupling force \(\mathbf{F}_{\rm decouple}\), a simplified test was performed on the full SPARC sample of 175 late-type galaxies.
+
+\subsubsection{Results on SPARC Data}
+
+\begin{itemize}
+    \item Total galaxies processed: 175
+    \item LSB galaxies: 61 (34.9\%)
+    \item Average patch stability: \( 97.68\% \pm 0.42\% \)
+    \item Median patch stability: 97.71\%
+    \item Minimum stability: 96.12\%
+    \item Average effective gravitational factor: 1.6447
+    \item Fixed theoretical parameter \( P \): 1.63299
+\end{itemize}
+
+Breakdown by galaxy type:
+\begin{itemize}
+    \item Normal galaxies (114): average stability \( \approx 97.89\% \)
+    \item LSB galaxies (61): average stability \( \approx 97.28\% \)
+    \item Difference (Normal $-$ LSB): \( \approx 0.61\% \)
+\end{itemize}
+
+These results demonstrate that fixing \( P \equiv \sqrt{8/3} \) does not significantly degrade the model's ability to describe real observational data. The model maintains high patch stability across the entire SPARC sample, even without any further tuning of \( P \). The relatively modest difference in stability between normal and LSB galaxies is expected in this simplified test (using only integrated baryonic mass and radius). A more detailed analysis using full radial profiles from the Rotmod\_LTG dataset is planned for the next stage.
+
+The successful validation on SPARC data confirms the internal consistency of Baseline v2 and marks an important transition: the parameter \( P \) is no longer a fitted coefficient, but a theoretically grounded constant derived from the core principles of Decoupled Observer Patch Holography.
