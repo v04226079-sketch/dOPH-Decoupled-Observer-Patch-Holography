@@ -3,7 +3,7 @@
 **Улучшенная holographic модель для описания кривых вращения галактик без тёмной материи**
 
 ### Основная идея
-dOPH (Decoupled Observer Patch Holography) — это развитие идеи Observer Patch Holography. Модель использует концепцию "наблюдательных патчей" на голографическом экране и механизм **decoupling** для исправления локальных рассогласований.
+dOPH (Decoupled Observer Patch Holography) — это развитие идеи [Observer Patch Holography](https://github.com/FloatingPragma/observer-patch-holography). Модель использует концепцию "наблюдательных патчей" на голографическом экране и механизм **decoupling** для исправления локальных рассогласований.
 
 ### Ключевые особенности
 - Фиксированный теоретический параметр **P = √(8/3) ≈ 1.633**
@@ -13,17 +13,15 @@ dOPH (Decoupled Observer Patch Holography) — это развитие идеи 
 
 ### Результаты
 - Хорошо описывает плоские кривые вращения галактик
-- Средний reduced χ² на тестовых галактиках SPARC ≈ 1.9
-- Лучше работает на низкой поверхностной яркости
+- Средний reduced χ² на тестовых галактиках ≈ **1.9**
 
-### Содержимое репозитория
+### Структура репозитория
 
-- `doph_model_improved2.py` — основная математическая модель
-- `tools/doph_calculator.py` — **простой калькулятор** для быстрого расчёта
+- [`doph_model_improved2.py`](doph_model_improved2.py) — основная математическая модель
+- [`tools/doph_calculator.py`](tools/doph_calculator.py) — **простой калькулятор** для быстрого расчёта
 - `docs/` и PDF-файлы — подробное описание теории
 
-### Как использовать простой калькулятор
+### Как использовать калькулятор
 
 ```bash
-cd tools
-python doph_calculator.py
+python tools/doph_calculator.py
