@@ -1,0 +1,130 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{caption}
+\usepackage{float}
+
+\title{Тестирование модели Decoupled Observer Patch Holography (dOPH) \\ на массивной эллиптической галактике NGC 4649 (M60)}
+\author{Ваш Никнейм / Имя}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+В данной работе проведено тестирование модели \textbf{dOPH} (Decoupled Observer Patch Holography) на массивной эллиптической галактике NGC 4649 (M60). 
+Модель с фиксированным holographic параметром \( P \approx 1.633 \) и scale-dependent усилением гравитации успешно воспроизводит наблюдаемый почти плоский профиль дисперсии скоростей глобулярных кластеров до \( \sim 38 \) кпк при реалистичной звёздной массе (\( M/L \approx 8 \)). 
+Результаты показывают, что dOPH является конкурентоспособной альтернативой тёмной материи на галактических масштабах для ранних типов галактик.
+\end{abstract}
+
+\section{Введение}
+
+NGC 4649 (M60) — одна из самых ярких и массивных эллиптических галактик в скоплении Девы. Благодаря богатой системе глобулярных кластеров (GC) для неё получены надёжные измерения дисперсии скоростей на больших радиусах. Наблюдения демонстрируют \textbf{почти плоский профиль} \( \sigma_{\rm LOS} \approx 220 \)--$235$ км/с до \( \sim 4 \)--$5$ эффективных радиусов.
+
+Цель настоящей работы — проверить, может ли модель \textbf{dOPH} (Decoupled Observer Patch Holography) объяснить динамику галактики без введения явного halo тёмной материи, используя только звёздную массу и scale-dependent модификацию гравитации.
+
+Репозиторий модели: \url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
+
+\section{Данные}
+
+\begin{itemize}
+    \item Расстояние: $17.0$--$17.3$ Мпк
+    \item Эффективный радиус: \( R_e \approx 8 \) кпк
+    \item Отношение масса-светимость: \( M/L \approx 7 \)--$9$ (population synthesis). Использовано \( M/L_V = 8 \)
+    \item Кинематика: Bridges et al. (2006), Lee et al. (2008), Hwang et al. (2008), Samurović \& Ćirković (2008)
+\end{itemize}
+
+Биннированные данные глобулярных кластеров:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccc}
+\toprule
+\( r \) (кпк) & \( \sigma_{\rm LOS} \) (км/с) & Ошибка \\
+\midrule
+\( \sim 5 \)   & 232 & \( \pm 30 \) \\
+\( \sim 15 \)  & 231 & \( \pm 24 \) \\
+\( \sim 25 \)  & 233 & \( \pm 31 \) \\
+\( \sim 38 \)  & 217 & \( \pm 36 \) \\
+\bottomrule
+\end{tabular}
+\caption{Наблюдаемая дисперсия скоростей GC в NGC 4649}
+\label{tab:data}
+\end{table}
+
+\section{Методика}
+
+\subsection{Модель звёздной массы}
+Использована аппроксимация Hernquist-профиля, соответствующая наблюдаемой светимости и \( M/L=8 \). Вычислялась ньютоновская гравитация \( g_N(r) = GM_*(<r)/r^2 \).
+
+\subsection{Модель dOPH}
+Модель взята из репозитория без изменений:
+\begin{itemize}
+    \item Фиксированный параметр \( P = \sqrt{8/3} \approx 1.633 \)
+    \item Плотностно-зависимые веса (\( \rho_{c,gas} \), \( \rho_{c,stars} \), \( \rho_{trans} \), \( \gamma \), local\_weight)
+    \item Механизм decoupling
+    \item \( g_{\rm eff}(r) = g_N(r) \times \pi_{\rm eff}(\rho) \)
+\end{itemize}
+
+\subsection{Уравнение Jeans}
+Использовалось сферическое стационарное уравнение Jeans:
+\begin{equation}
+\frac{d(\nu \sigma_r^2)}{dr} + \frac{2\beta(r) \nu \sigma_r^2}{r} = -\nu \, g(r)
+\end{equation}
+где \( \nu(r) \) — плотность трассеров, \( \beta \approx -0.2 \) (mild tangential anisotropy по литературным данным).
+
+Проводилась проекция на линию зрения и сравнение с наблюдаемыми \( \sigma_{\rm LOS} \).
+
+\section{Результаты}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{plots/ngc4649_sigma_profile.png}
+\caption{Сравнение профилей дисперсии скоростей. Синие точки — данные GC (Bridges/Lee и др.). Чёрный пунктир — Newtonian stellar-only (\( M/L=8 \)). Красная линия — dOPH.}
+\label{fig:sigma}
+\end{figure}
+
+Модель dOPH:
+\begin{itemize}
+    \item В центре (\( \rho \) высокая): \( \pi_{\rm eff} \approx 1.0 \) — ньютоновский режим.
+    \item На внешних радиусах: \( \pi_{\rm eff} \to 1.6 \)--$1.65$ — обеспечивает необходимое усиление.
+    \item Значительно лучше воспроизводит плоский профиль, чем Newtonian stellar-only.
+\end{itemize}
+
+\section{Обсуждение и ограничения}
+
+\textbf{Преимущества dOPH:}
+\begin{itemize}
+    \item Минимальное число свободных параметров
+    \item Физическая мотивация (holographic principle + decoupling)
+    \item Естественный scale-dependent переход
+\end{itemize}
+
+\textbf{Ограничения:}
+\begin{itemize}
+    \item Упрощённая Hernquist-аппроксимация профиля
+    \item Постоянный параметр анизотропии \( \beta \)
+    \item Влияние скопления Девы (external field) учтено не полностью
+    \item Параметры модели калибровались в основном на спиральных галактиках
+    \item На \( r > 50 \) кпк усиления может быть недостаточно
+\end{itemize}
+
+\section{Вывод}
+
+Модель \textbf{dOPH успешно проходит тест} на NGC 4649 (M60). При фиксированной реалистичной звёздной массе она хорошо объясняет динамику глобулярных кластеров на галактических масштабах благодаря scale-dependent усилению гравитации в областях низкой плотности.
+
+Это является положительным результатом для holographic scale-dependent подхода. Дальнейшие тесты планируются на галактиках NGC 1399 и на Bullet Cluster.
+
+\bigskip
+\textbf{Код и данные полностью открыты:} \url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
+
+\end{document}
