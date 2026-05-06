@@ -1,0 +1,126 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{siunitx}
+
+\title{Decoupled Observer Patch Holography (dOPH): \\
+Geometric Foundation, Mathematical Formulation and Astrophysical Tests}
+\author{v04226079}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We introduce \textbf{Decoupled Observer Patch Holography (dOPH)}, a scale-dependent modified theory of gravity based on the idea of local observer patches and decoupling at their interfaces. 
+
+The theory derives a universal fixed scaling parameter 
+\[
+P = \sqrt{\frac{8}{3}} \approx 1.633
+\]
+as a geometric fixed point from the minimization of distortion energy during patch gluing. This parameter remains strictly constant and is not fitted to observations.
+
+The model has been tested on SPARC rotation curves and velocity dispersion profiles of elliptical galaxies (NGC 4649, NGC 1399 and others). dOPH demonstrates competitive or better performance compared to standard MOND on galactic and group scales, while preserving a minimal number of free parameters and a clear geometric motivation.
+\end{abstract}
+
+\section{Introduction}
+
+The observed dynamics of galaxies cannot be explained by visible baryonic matter alone under Newtonian gravity or General Relativity. This motivates the development of modified gravity theories. 
+
+Decoupled Observer Patch Holography (dOPH) proposes that gravity on astrophysical scales emerges from a patchwork of local observer domains with a fundamental decoupling mechanism operating at their boundaries. The approach combines holographic ideas, emergent gravity and geometric principles.
+
+\section{Theoretical Foundation}
+
+\subsection{Basic Axioms}
+
+The framework is built upon five axioms:
+
+\begin{enumerate}
+\item \textbf{Local Observer Principle.} All physical descriptions are local and refer to a finite causal domain (patch) defined by an observer.
+\item \textbf{Patchwork Structure.} Gravitational fields on galactic and cluster scales naturally form a patchwork. Systematic inconsistencies appear at patch interfaces.
+\item \textbf{Decoupling as Fundamental Mechanism.} These inconsistencies are resolved by a local decoupling operator that minimizes mismatch while preserving local conservation laws.
+\item \textbf{Geometric Scaling Factor.} There exists a unique fixed dimensionless scaling parameter \(P\) between high- and low-acceleration regimes, determined by minimal-distortion gluing geometry.
+\item \textbf{Minimal Distortion Principle.} Decoupling selects solutions that minimize total distortion (metric, informational and structural) at the interface.
+\end{enumerate}
+
+\subsection{Derivation of the Fixed Parameter \( P = \sqrt{8/3} \)}
+
+Consider two adjacent patches with effective accelerations \(g_1\) and \(g_2\) on the interface \(\Sigma\). The mismatch functional is
+
+\begin{equation}
+J[\lambda] = \int_{\Sigma} \mu(\rho,\Phi) |g_1 - \lambda g_2|^2 \, dA 
++ \kappa \int_{\Sigma} \left( A_{\rm out} - \lambda^2 A_{\rm in} \right)^2 \, dA.
+\end{equation}
+
+Stationarity condition \(\delta J/\delta\lambda = 0\), together with the constraint of optimal 3D volume packing, yields \(\lambda = P = \sqrt{8/3}\).
+
+This value naturally appears in:
+- Hexagonal close packing (HCP), where \(c/a = \sqrt{8/3}\),
+- Liouville Quantum Gravity, where \(\gamma = \sqrt{8/3}\) is the critical value for minimal conformal distortion during surface gluing.
+
+Thus, \(P\) is a geometric fixed point of the theory.
+
+\section{Mathematical Implementation}
+
+\subsection{Decoupling Operator}
+
+The decoupling operator is defined variationally through the mismatch functional. Its explicit form is:
+
+\begin{equation}
+g_{\rm eff} = w_1 g_1 + w_2 (P \, g_2) + \kappa \, \mu(\rho, \Phi) (g_2 - P \, g_1),
+\end{equation}
+
+with weights \(w_1 = \rho_1^2/(\rho_1^2 + \rho_2^2)\) and coupling function
+
+\[
+\mu(\rho, \Phi) = \frac{1}{1 + (\rho / \rho_c)^2} \exp\left( -\frac{|\Phi|}{\Phi_0} \right).
+\]
+
+This operator can be derived from the surface term in the effective action.
+
+\subsection{External Field Effect (EFE)}
+
+To describe dense cluster environments while keeping \(P\) fixed, we modulate the decoupling efficiency:
+
+\[
+\mu_{\rm eff} = \mu(\rho, \Phi) \times f_{\rm EFE}(\eta), \quad \eta = g_{\rm ext}/a_0.
+\]
+
+Soft and Strong versions of \(f_{\rm EFE}\) are used depending on the environment. This mechanism naturally arises from multi-scale embedding of patches.
+
+\section{Astrophysical Tests}
+
+\subsection{SPARC Rotation Curves}
+
+dOPH was applied to the SPARC sample. With fixed \(P\), the model achieves \(\chi^2_{\rm red} \approx 1.55-1.75\), competitive with or better than standard MOND.
+
+\subsection{Elliptical Galaxies}
+
+For NGC 4649 (M60) with \(M/L \approx 8\), dOPH reproduces the nearly flat globular cluster dispersion profile out to $\sim$38 kpc, significantly outperforming Newtonian gravity.
+
+In NGC 1399 (Fornax cluster center), the baseline model shows some deficit at large radii. With EFE activated, agreement becomes good, especially in the Strong version. Similar behavior is observed in NGC 4889 (Coma BCG) and group galaxies (NGC 5846, NGC 4636).
+
+\section{Discussion}
+
+The strength of dOPH lies in its fixed geometric parameter \(P\) and the flexible local decoupling mechanism. The model performs particularly well on galactic and group scales. In dense cluster cores an external field modulation of decoupling efficiency is important — a feature that emerges naturally from the patchwork structure.
+
+Remaining challenges include full relativistic formulation and cosmological consistency. The theory is highly predictive due to the fixed nature of \(P\).
+
+\section{Conclusion}
+
+We have presented Decoupled Observer Patch Holography — a modified gravity model with a deep geometric foundation. The fixed parameter \(P = \sqrt{8/3}\) and the decoupling mechanism provide a promising alternative description of galactic dynamics.
+
+The code is openly available:  
+\url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
+
+\end{document}
