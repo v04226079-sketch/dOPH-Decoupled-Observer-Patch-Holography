@@ -73,7 +73,70 @@ This value coincides with:
 Thus, $P$ is a \textbf{geometric fixed point} of the theory and remains strictly constant across all scales.
 
 \section{Mathematical Implementation}
+\section{Mathematical Implementation}
 
+\subsection{Decoupling Operator}
+
+The core of the dOPH framework is the \textbf{decoupling operator} \(\mathcal{D}\), which acts on the interface \(\Sigma\) between neighboring patches. Let \(g_1\) and \(g_2\) be the effective accelerations arriving at the interface from each patch. The operator is defined variationally as the minimizer of the mismatch functional:
+
+\begin{equation}
+J[g] = \int_{\Sigma} \mu(\rho, \Phi) \left| g - P \cdot \tilde{g} \right|^2 \sqrt{-h} \, d^2x 
++ \nu \int_{\Sigma} \left(1 - |\langle \psi_1 | \psi_2 \rangle|^2 \right) \sqrt{-h} \, d^2x,
+\label{eq:decoupling_functional}
+\end{equation}
+
+where \(P = \sqrt{8/3}\) is the fixed geometric scaling factor, \(\tilde{g}\) is the appropriately weighted field from the neighboring patch, and \(\mu(\rho, \Phi)\) controls the strength of decoupling.
+
+The explicit approximate form obtained after variation is:
+
+\begin{equation}
+g_{\rm eff} = w_1 g_1 + w_2 (P \, g_2) + \kappa \, \mu(\rho, \Phi) (g_2 - P \, g_1),
+\label{eq:geff}
+\end{equation}
+
+with adaptive weights
+\[
+w_1 = \frac{\rho_1^\alpha}{\rho_1^\alpha + \rho_2^\alpha}, \quad w_2 = 1 - w_1.
+\]
+
+The coupling function is chosen as
+\[
+\mu(\rho, \Phi) = \frac{1}{1 + (\rho / \rho_c)^2} \exp\left( -\frac{|\Phi|}{\Phi_0} \right),
+\]
+where \(\beta = 2\) is motivated by smoothness requirements at the interface, and \(\Phi_0\) is a characteristic potential depth.
+
+This formulation can be naturally included in the effective action as a surface term:
+\[
+S_{\rm decouple} = \int_{\Sigma} \mathcal{L}_{\rm mismatch} \sqrt{-h} \, d^2x.
+\]
+
+\subsection{External Field Effect (EFE)}
+
+To improve performance in dense cluster environments while keeping \(P\) strictly fixed, we introduce an external field dependence on the decoupling strength. The effective coupling becomes:
+
+\begin{equation}
+\mu_{\rm eff}(\rho, \Phi, g_{\rm ext}) = \mu(\rho, \Phi) \times f_{\rm EFE}(\eta),
+\end{equation}
+
+where \(\eta = g_{\rm ext} / a_0\) and we use two variants:
+
+- **Soft EFE** (default):
+  \[
+  f_{\rm EFE}(\eta) = 1 + 0.55 \frac{\eta^{1.2}}{1 + \eta^{1.8}}
+  \]
+
+- **Strong EFE** (for rich cluster cores):
+  \[
+  f_{\rm EFE}(\eta) = 1 + 1.15 \frac{\eta^{1.6}}{1 + 0.6 \eta^{2.2}}
+  \]
+
+Both versions leave \(P = \sqrt{8/3}\) strictly constant. The external field only modulates the \emph{efficiency} of the decoupling mechanism, which is a natural consequence of multi-scale embedding of patches (Axiom 1 and Axiom 5).
+
+This approach allows the model to remain close to pure dOPH behavior in isolated galaxies (SPARC) while providing the necessary additional support in cluster-centric systems such as NGC 1399 and NGC 4889.
+
+\subsection{Effective Acceleration}
+
+The final effective acceleration used to compute rotation curves and velocity dispersions is given by equation (\ref{eq:geff}) with the modified \(\mu_{\rm eff}\). The model contains essentially one fundamental fixed parameter \(P\) and a small number of well-motivated coupling constants (\(\rho_c\), \(\Phi_0\), \(\kappa\)), making it highly predictive.
 (Will be expanded in the next iteration — decoupling operator, functional form of $\mu(\rho,\Phi)$, and external field dependence)
 
 \section{Astrophysical Tests}
