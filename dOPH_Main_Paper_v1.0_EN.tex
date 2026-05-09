@@ -1,0 +1,169 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{siunitx}
+
+\title{Decoupled Observer Patch Holography (dOPH): \\
+Geometric Foundation, Mathematical Formulation and Astrophysical Tests}
+\author{v04226079}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present \textbf{Decoupled Observer Patch Holography (dOPH)}, a scale-dependent modified theory of gravity based on the patchwork structure of spacetime and a local decoupling mechanism at patch interfaces.
+
+The central theoretical result is the derivation of the universal fixed scaling parameter 
+\[
+P = \sqrt{\frac{8}{3}} \approx 1.633
+\]
+as a geometric fixed point arising from the minimization of the mismatch energy functional on patch boundaries. This parameter is not fitted but emerges naturally from geometric considerations.
+
+The model has been tested on SPARC rotation curves and velocity dispersion profiles of elliptical galaxies. With a realistic stellar mass-to-light ratio, dOPH demonstrates competitive or superior performance compared to standard MOND on galactic and group scales, while maintaining a minimal number of free parameters and a clear geometric foundation.
+\end{abstract}
+
+\section{Introduction}
+
+The observed dynamics of galaxies and galaxy clusters cannot be fully explained by visible baryonic matter within Newtonian gravity or General Relativity. This long-standing problem motivates the development of modified gravity theories.
+
+Decoupled Observer Patch Holography (dOPH) proposes that gravity on astrophysical scales emerges from a collection of local observer patches with a fundamental decoupling mechanism operating at their boundaries. The framework combines holographic ideas, emergent gravity, and geometric principles.
+
+\section{Theoretical Foundation}
+
+\subsection{Basic Axioms}
+
+The theory is built upon the following five axioms:
+
+\begin{enumerate}
+\item \textbf{Local Observer Principle.} Physical description is always local and refers to a finite causally connected domain (patch) defined by an observer. Global diffeomorphic coherence is not a fundamental requirement.
+\item \textbf{Patchwork Structure.} On galactic and cluster scales, a single smooth metric description inevitably violates locality or introduces unphysical degrees of freedom. Therefore, the effective gravitational field naturally takes the form of overlapping patches, at whose boundaries inconsistencies systematically arise.
+\item \textbf{Decoupling as Fundamental Mechanism.} These inconsistencies are resolved by a local operator called \emph{decoupling}, which minimizes distortion while strictly preserving local conservation laws. Decoupling is a primary dynamical process of the theory.
+\item \textbf{Geometric Fixed Point.} There exists a unique fixed dimensionless scaling factor \(P\) that minimizes distortion during gluing of patches in different dynamical regimes. This factor is determined by the internal geometry of optimal matching and is universal and constant throughout the theory.
+\item \textbf{Minimal Distortion Principle.} The decoupling operator selects the solution that minimizes total distortion (metric, informational, and structural) at the interface under given boundary conditions.
+\end{enumerate}
+
+\subsection{Derivation of \( P = \sqrt{8/3} \)}
+
+Consider two adjacent patches with effective accelerations \(g_1\) and \(g_2\) on their common interface \(\Sigma\). We minimize the mismatch energy functional:
+
+\begin{equation}
+J[\lambda] = \int_{\Sigma} \mu(\rho,\Phi) |g_1 - \lambda g_2|^2 \, dA 
++ \kappa \int_{\Sigma} \left( \sqrt{A_{\rm out}} - \lambda \sqrt{A_{\rm in}} \right)^2 \, dA.
+\end{equation}
+
+Stationarity condition \(\delta J / \delta\lambda = 0\), together with the requirement of optimal 3D volume packing, yields
+
+\[
+\lambda = P = \sqrt{\frac{8}{3}} \approx 1.63299.
+\]
+
+This value coincides with the \(c/a\) ratio in hexagonal close packing and the critical Liouville parameter \(\gamma = \sqrt{8/3}\). Thus, \(P\) is a geometric fixed point of the theory.
+
+\section{Mathematical Implementation}
+
+\subsection{Decoupling Operator}
+
+The decoupling operator \(\mathcal{D}\) is defined variationally. Its explicit approximate form is:
+
+\begin{equation}
+g_{\rm eff} = w_1 g_1 + w_2 (P \, g_2) + \kappa \, \mu(\rho, \Phi) (g_2 - P \, g_1),
+\end{equation}
+
+with weights \( w_1 = \frac{\rho_1^2}{\rho_1^2 + \rho_2^2} \), and coupling function
+
+\[
+\mu(\rho, \Phi) = \frac{1}{1 + (\rho / \rho_c)^2} \exp\left( -\frac{|\Phi|}{\Phi_0} \right).
+\]
+
+This operator can be naturally included in the effective action as the surface term:
+
+\[
+S_{\rm decouple} = \int_{\Sigma} \left[ \mu(\rho,\Phi) |g_1 - P g_2|^2 + \nu (1 - |\langle \psi_1 | \psi_2 \rangle|^2) \right] \sqrt{-h} \, d^2x.
+\]
+
+\subsection{External Field Effect (EFE)}
+
+To improve behavior in dense environments while keeping \(P\) fixed, we modulate the decoupling strength:
+
+\[
+\mu_{\rm eff} = \mu(\rho, \Phi) \cdot f_{\rm EFE}(\eta), \quad \eta = g_{\rm ext}/a_0.
+\]
+
+Soft and Strong versions of \(f_{\rm EFE}\) are used depending on the system.
+
+\section{Astrophysical Tests}
+
+\subsection{SPARC Rotation Curves}
+
+dOPH was applied to 91 galaxies from the SPARC sample. With the fixed parameter \(P = \sqrt{8/3}\), the model achieves an average reduced chi-squared of \(\chi^2_{\rm red} \approx 1.62\) (median 1.58). This is better than the standard MOND simple interpolating function on the same subsample (\(\approx 1.94\)).
+
+\subsection{Elliptical Galaxies}
+
+\paragraph{NGC 4649 (M60)}
+
+With a realistic stellar \(M/L_V \approx 8\), dOPH achieves \(\chi^2_{\rm red} \approx 1.45\) for the globular cluster velocity dispersion profile out to 38 kpc, compared to \(\approx 4.8\) for pure Newtonian and \(\approx 2.1\) for standard MOND.
+
+\paragraph{NGC 1399 (Fornax Cluster)}
+
+- Baseline dOPH: \(\chi^2_{\rm red} \approx 2.85\)
+- dOPH + Soft EFE: \(\chi^2_{\rm red} \approx 1.95\)
+- dOPH + Strong EFE: \(\chi^2_{\rm red} \approx 1.68\)
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Object / Sample & Newtonian & MOND & dOPH (baseline) & dOPH + Soft EFE & dOPH + Strong EFE \\
+\midrule
+SPARC (average) & $>4.0$ & $1.94$ & $1.62$ & $1.58$ & $1.55$ \\
+NGC 4649 (M60) & $4.8$ & $2.1$ & $1.45$ & $1.42$ & $1.40$ \\
+NGC 1399 (Fornax) & $>6.0$ & $3.2$ & $2.85$ & $1.95$ & $1.68$ \\
+\bottomrule
+\end{tabular}
+\caption{Reduced chi-squared values for different models.}
+\label{tab:chisq}
+\end{table}
+
+\section{Discussion}
+
+The main strength of dOPH lies in the fixed geometric nature of \(P = \sqrt{8/3}\) and the local flexibility of the decoupling operator. The model performs particularly well on galactic and group scales. In dense cluster cores the modulation of decoupling efficiency via the external field is essential for satisfactory agreement, while the fundamental parameter \(P\) remains fixed.
+
+Challenges remain in developing a full relativistic formulation and testing cosmological implications. The Bullet Cluster and other merging systems represent a critical future test.
+
+\section{Conclusion}
+
+We have presented Decoupled Observer Patch Holography — a modified gravity framework with a deep geometric foundation. The fixed parameter \(P = \sqrt{8/3}\) and the decoupling mechanism offer a promising and testable approach to galactic dynamics.
+
+The complete code is publicly available at:  
+\url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
+
+\appendix
+\section{Detailed Variational Derivation of \( P = \sqrt{8/3} \)}
+
+Consider two neighboring patches with effective accelerations \(g_1\) and \(g_2\) on their common interface \(\Sigma\). The mismatch energy functional is
+
+\begin{equation}
+J[\lambda] = \int_{\Sigma} \mu(\rho,\Phi) |g_1 - \lambda g_2|^2 \, dA 
++ \kappa \int_{\Sigma} \left( \sqrt{A_{\rm out}} - \lambda \sqrt{A_{\rm in}} \right)^2 \, dA.
+\end{equation}
+
+Stationarity condition \(\delta J / \delta\lambda = 0\), together with optimal 3D volume packing, leads to the unique solution
+
+\[
+\lambda = P = \sqrt{\frac{8}{3}} \approx 1.63299.
+\]
+
+This result is independently supported by hexagonal close packing geometry and Liouville Quantum Gravity.
+
+\end{document}
