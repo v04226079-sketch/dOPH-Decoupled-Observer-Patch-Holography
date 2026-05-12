@@ -151,13 +151,26 @@ For NGC 4649 (M60), with a reasonable stellar $M/L \approx 8$, dOPH successfully
 
 \section{Discussion}
 
-dOPH shows strong performance on galactic and group scales. On scales of central galaxies in rich clusters (e.g., NGC 1399, NGC 4889), an external field dependence of the decoupling strength (EFE-like mechanism) is required for better agreement. This does not change the fixed nature of $P$.
+Decoupled Observer Patch Holography (dOPH) offers a geometrically motivated approach to galactic dynamics. The main strength of the model is that the key parameter \(P = \sqrt{8/3} \approx 1.633\) is derived from the principle of minimal distortion at the boundaries of observer patches, rather than being phenomenologically fitted.
+
+On the SPARC sample of 91 galaxies, the model achieves an average reduced chi-squared of \(\chi^2_{\rm red} \approx 1.58\) (range 1.55--1.65). For comparison, the standard MOND with the simple interpolating function yields \(\approx 1.94\) on a similar sample. The model also performs well for velocity dispersion profiles of elliptical galaxies, particularly NGC 4649 (\(\chi^2_{\rm red} \approx 1.45\) at realistic \(M/L_V \approx 8\)).
+
+However, the model faces notable challenges on cluster scales. The most critical test is the **Bullet Cluster (1E 0657-56)**. Observations show a significant spatial offset between the peak of the gravitational mass (from weak lensing) and the peak of the hot baryonic gas (from X-ray emission). In the current implementation of dOPH, the gravitational enhancement primarily follows the local baryonic density, which makes it difficult to explain the observed offset.
+
+Possible directions for further development include introducing dependence of the decoupling strength on dynamical parameters (density gradients, shock indicators), exploring a repair interpretation of the decoupling mechanism, and incorporating non-local effects.
+
+At present, dOPH works most reliably on galactic and small-group scales.
 
 Future work includes relativistic generalization, cosmological tests, and detailed analysis of galaxy clusters (Bullet Cluster, etc.).
 
 \section{Conclusion}
 
-We have proposed a new modified gravity framework dOPH with a fixed geometric parameter $P = \sqrt{8/3}$. The model demonstrates promising results on galactic scales and possesses a conceptually interesting theoretical foundation rooted in observer patches and geometric gluing.
+Decoupled Observer Patch Holography represents an attempt to construct a modified theory of gravity based on the local patchwork structure of spacetime and the geometric principle of minimal distortion. The central result is the fixed parameter \(P = \sqrt{8/3}\), which has a purely geometric origin.
+
+The model demonstrates competitive results on galactic scales with a small number of free parameters. However, explaining the dynamics of merging clusters, particularly the Bullet Cluster, remains an open challenge and an important direction for future work.
+
+The full code of the model and analysis is publicly available at:  
+\url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
 
 The full code is publicly available: \url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
 
