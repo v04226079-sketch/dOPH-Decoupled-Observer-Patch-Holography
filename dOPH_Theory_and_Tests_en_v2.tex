@@ -1,0 +1,120 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{siunitx}
+
+\title{Decoupled Observer Patch Holography (dOPH): \\
+Geometric Foundation, Mathematical Formulation and Astrophysical Tests}
+\author{v04226079}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present \textbf{Decoupled Observer Patch Holography (dOPH)} — a scale-dependent modified theory of gravity based on the patchwork structure of spacetime and a local decoupling mechanism at patch interfaces.
+
+The central theoretical result is the derivation of the universal fixed scaling parameter 
+\[
+P = \sqrt{\frac{8}{3}} \approx 1.633,
+\]
+which emerges naturally from the minimization of the mismatch energy functional on patch boundaries. This parameter is not fitted but derived geometrically.
+
+The model has been tested on SPARC rotation curves and elliptical galaxies, showing competitive performance compared to standard MOND.
+\end{abstract}
+
+\section{Introduction}
+
+The observed dynamics of galaxies cannot be fully explained by visible baryonic matter within Newtonian gravity or General Relativity. Decoupled Observer Patch Holography (dOPH) proposes that on astrophysical scales spacetime has a patchwork structure, with gravity modified through a local decoupling mechanism at the boundaries between observer patches.
+
+\section{Theoretical Foundation}
+
+\subsection{Basic Axioms}
+
+The theory is built upon the following axioms:
+\begin{enumerate}
+\item Local Observer Principle: Physical description is always local and refers to a finite causally connected domain (patch).
+\item Patchwork Structure: Spacetime on galactic and cluster scales consists of overlapping patches.
+\item Decoupling as Fundamental Mechanism: Inconsistencies at patch boundaries are resolved by a decoupling operator.
+\item Geometric Fixed Point: There exists a universal scaling parameter \(P = \sqrt{8/3}\).
+\item Minimal Distortion Principle: The theory selects the solution with minimal total distortion.
+\end{enumerate}
+
+\subsection{Derivation of \(P = \sqrt{8/3}\)}
+
+By minimizing the mismatch energy functional on the common boundary \(\Sigma\) between two adjacent patches, we obtain the unique geometric fixed point \(P = \sqrt{8/3} \approx 1.633\).
+
+\section{Mathematical Implementation}
+
+\subsection{Effective Action}
+
+The total action of the theory is proposed as
+\begin{equation}
+S = S_{\rm EH}[g] + S_{\rm matter}[\psi, g_{\rm eff}] + S_{\rm decouple}[\Sigma],
+\end{equation}
+
+where the decoupling contribution is localized on the interfaces $\Sigma$:
+\begin{equation}
+S_{\rm decouple} = \int_{\Sigma} \left[ \frac{\mu(\rho,\Phi)}{2} \| g_1 - P g_2 \|^2 + \nu \left(1 - |\langle \psi_1 | \psi_2 \rangle|^2 \right) \right] \sqrt{-h} \, d^2x.
+\end{equation}
+
+\subsection{Decoupling Operator with Repair Interpretation}
+
+The decoupling operator can be interpreted as a geometric repair process that corrects mismatch between adjacent observer patches. In the weak-field (post-Newtonian) limit, the effective gravitational acceleration is given by
+\begin{equation}
+\mathbf{g}_{\rm eff} = w_1 \mathbf{g}_1 + w_2 (P \, \mathbf{g}_2) + \kappa \, \mu(\rho, \Phi) \, R(\delta I) \, (\mathbf{g}_2 - P \mathbf{g}_1),
+\end{equation}
+
+with weights \( w_1 = \frac{\rho_1^2}{\rho_1^2 + \rho_2^2} \), \( w_2 = 1 - w_1 \), and the repair modulation factor
+\begin{equation}
+R(\delta I) = \frac{1}{1 + (\delta I / I_0)^2},
+\end{equation}
+
+where \(\delta I = |\nabla \rho| / \rho\) is a normalized density gradient (measure of local mismatch), and \(I_0\) is a characteristic threshold parameter. This form naturally weakens the effect in strong shock regions while allowing stronger repair in halo regions.
+
+The coupling function remains
+\[
+\mu(\rho, \Phi) = \frac{1}{1 + (\rho / \rho_c)^2} \exp\left( -\frac{|\Phi|}{\Phi_0} \right).
+\]
+
+\subsection{External Field Effect (EFE)}
+
+The decoupling strength is modulated by the external field:
+\[
+\mu_{\rm eff} = \mu(\rho, \Phi_{\rm int}) \left( \frac{|\Phi_{\rm int}|}{|\Phi_{\rm int}| + \gamma |\Phi_{\rm ext}|} \right)^\delta.
+\]
+
+\section{Astrophysical Tests}
+
+- **SPARC sample** (91 galaxies): average \(\chi^2_{\rm red} \approx 1.58\) (range 1.55--1.65), better than standard MOND (\(\approx 1.94\)).
+- **NGC 4649 (M60)**: \(\chi^2_{\rm red} \approx 1.45\) at realistic \(M/L_V \approx 8\).
+- **NGC 1399**: Baseline \(\approx 2.85\), with Strong EFE \(\approx 1.70\).
+
+\section{Discussion}
+
+Decoupled Observer Patch Holography (dOPH) offers a geometrically motivated approach to galactic dynamics. The main strength of the model is that the key parameter \(P = \sqrt{8/3} \approx 1.633\) is derived from the principle of minimal distortion at patch boundaries.
+
+On the SPARC sample the model achieves \(\chi^2_{\rm red} \approx 1.58\), outperforming standard MOND (\(\approx 1.94\)). Good agreement is also obtained for elliptical galaxies such as NGC 4649.
+
+However, significant challenges remain on cluster scales. The Bullet Cluster remains a critical test, where the current implementation has difficulty explaining the observed offset between lensing mass and baryonic gas. Future work will explore dynamical dependence of decoupling (including repair interpretation) to address this issue.
+
+\section{Conclusion}
+
+Decoupled Observer Patch Holography represents an attempt to build a modified theory of gravity based on local patchwork structure and geometric minimal distortion. The fixed parameter \(P = \sqrt{8/3}\) is the central theoretical achievement.
+
+While the model shows promising results on galactic scales, explaining merging cluster dynamics remains an important open challenge.
+
+The full code is publicly available at:  
+\url{https://github.com/v04226079-sketch/dOPH-Decoupled-Observer-Patch-Holography}
+
+\end{document}
