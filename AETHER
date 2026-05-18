@@ -1,0 +1,315 @@
+// aether_v38.cpp
+#include <iostream>
+#include <vector>
+#include <thread>
+#include <atomic>
+#include <chrono>
+#include <random>
+#include <mutex>
+#include <unordered_map>
+#include <array>
+#include <cstring>
+#include <iomanip>
+#include <string>
+#include <csignal>
+#include <algorithm>
+
+std::atomic<bool> mining_active{true};
+
+// ====================== SHA256 ======================
+namespace sha256 {
+    using u32 = uint32_t;
+    using u64 = uint64_t;
+
+    const u32 K[64] = {
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+    };
+
+    inline u32 rotr(u32 x, int n) { return (x >> n) | (x << (32 - n)); }
+
+    void transform(u32 state[8], const uint8_t* data) {
+        u32 a = state[0], b = state[1], c = state[2], d = state[3],
+            e = state[4], f = state[5], g = state[6], h = state[7];
+        u32 w[64];
+        for (int i = 0; i < 16; ++i)
+            w[i] = (data[i*4]<<24) | (data[i*4+1]<<16) | (data[i*4+2]<<8) | data[i*4+3];
+
+        for (int i = 16; i < 64; ++i) {
+            u32 s0 = rotr(w[i-15],7) ^ rotr(w[i-15],18) ^ (w[i-15]>>3);
+            u32 s1 = rotr(w[i-2],17) ^ rotr(w[i-2],19) ^ (w[i-2]>>10);
+            w[i] = w[i-16] + s0 + w[i-7] + s1;
+        }
+
+        for (int i = 0; i < 64; ++i) {
+            u32 s1 = rotr(e,6) ^ rotr(e,11) ^ rotr(e,25);
+            u32 ch = (e & f) ^ (\~e & g);
+            u32 temp1 = h + s1 + ch + K[i] + w[i];
+            u32 s0 = rotr(a,2) ^ rotr(a,13) ^ rotr(a,22);
+            u32 maj = (a & b) ^ (a & c) ^ (b & c);
+            u32 temp2 = s0 + maj;
+
+            h = g; g = f; f = e; e = d + temp1;
+            d = c; c = b; b = a; a = temp1 + temp2;
+        }
+
+        state[0] += a; state[1] += b; state[2] += c; state[3] += d;
+        state[4] += e; state[5] += f; state[6] += g; state[7] += h;
+    }
+
+    std::array<uint8_t,32> hash(const void* input, size_t len) {
+        std::array<uint8_t,32> out{};
+        u32 state[8] = {0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};
+        const uint8_t* data = static_cast<const uint8_t*>(input);
+        size_t i = 0;
+        while (i + 64 <= len) { transform(state, data + i); i += 64; }
+
+        uint8_t buf[64] = {};
+        std::memcpy(buf, data + i, len - i);
+        buf[len - i] = 0x80;
+        if (len - i >= 56) {
+            transform(state, buf);
+            std::memset(buf, 0, 64);
+        }
+        u64 bitlen = len * 8ULL;
+        for (int j = 0; j < 8; ++j)
+            buf[56 + j] = (bitlen >> (56 - j*8)) & 0xFF;
+        transform(state, buf);
+
+        for (int j = 0; j < 8; ++j) {
+            out[j*4] = (state[j]>>24)&0xFF; out[j*4+1]=(state[j]>>16)&0xFF;
+            out[j*4+2]=(state[j]>>8)&0xFF;  out[j*4+3]=state[j]&0xFF;
+        }
+        return out;
+    }
+}
+
+// ====================== DOIS v38 — Social Graph ======================
+struct PatchInfo {
+    int health = 1000;
+    int trust = 620;
+    int age = 0;
+    std::array<uint64_t, 6> boundary{};
+    std::chrono::steady_clock::time_point born;
+    std::unordered_map<uint64_t, int> friends;   // Social Graph: friend_id → affinity
+};
+
+class DOIS {
+private:
+    std::unordered_map<uint64_t, PatchInfo> patches;
+    std::mutex mtx;
+
+public:
+    void register_patch(uint64_t id);
+    bool decouple(uint64_t local_id, uint64_t foreign_id);
+    bool should_accept_block(uint64_t patch_id);
+    std::string get_status();
+};
+
+DOIS dois;
+
+void DOIS::register_patch(uint64_t id) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto& p = patches[id];
+    p.health = 1000; p.trust = 620; p.age = 0;
+    p.born = std::chrono::steady_clock::now();
+
+    uint64_t seed = id;
+    for (int i = 0; i < 6; ++i) {
+        seed = seed * 0x517CC1B727220A95ULL + i;
+        p.boundary[i] = seed ^ (id << 4) ^ (id >> 3);
+    }
+    std::cout << "🛡️ Patch зарегистрирован → ID: " << id << "\n";
+}
+
+bool DOIS::decouple(uint64_t local_id, uint64_t foreign_id) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto itl = patches.find(local_id);
+    auto itf = patches.find(foreign_id);
+    if (itl == patches.end() || itf == patches.end()) return true;
+
+    PatchInfo& local = itl->second;
+    const PatchInfo& foreign = itf->second;
+
+    if (std::chrono::duration<double>(std::chrono::steady_clock::now() - local.born).count() < 25.0)
+        return true;
+
+    int inconsistency = 0;
+    for (int i = 0; i < 6; ++i)
+        inconsistency += __builtin_popcountll(local.boundary[i] ^ foreign.boundary[i]);
+
+    int affinity = 320 - (inconsistency / 2);           // от -50 до +300 примерно
+    local.friends[foreign_id] = std::max(local.friends[foreign_id], affinity);
+
+    // Основная реакция
+    if (inconsistency <= 38) {                          // Друзья
+        local.health = std::min(1000, local.health + 32);
+        local.trust = std::min(1000, local.trust + 24);
+        local.age++;
+    } else if (inconsistency > 55) {
+        local.health = std::max(380, local.health - 30);
+        local.trust = std::max(300, local.trust - 18);
+    } else {
+        local.health = std::min(1000, local.health + 16);
+        local.trust = std::min(1000, local.trust + 11);
+    }
+
+    // Социальная регенерация (помощь друзей)
+    if (local.age > 35) {
+        int social_bonus = 0;
+        for (const auto& f : local.friends) {
+            if (f.second > 180) social_bonus += 8;      // сильные друзья помогают
+        }
+        if (local.health < 780)
+            local.health += std::min(22, social_bonus);
+    }
+
+    return true;
+}
+
+bool DOIS::should_accept_block(uint64_t patch_id) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto it = patches.find(patch_id);
+    if (it == patches.end()) return false;
+
+    const auto& p = it->second;
+    auto age_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - p.born).count();
+    int age_bonus = (age_sec < 55.0) ? 150 : 0;
+
+    double avg_health = 0.0;
+    for (const auto& kv : patches) avg_health += kv.second.health;
+    avg_health /= patches.size();
+
+    int threshold = (avg_health < 720) ? 515 : 585;
+
+    int score = p.health + (p.trust / 2) + age_bonus;
+    return score > threshold;
+}
+
+std::string DOIS::get_status() {
+    std::lock_guard<std::mutex> lock(mtx);
+    if (patches.empty()) return "No patches";
+
+    double avg_h = 0, avg_t = 0;
+    int max_h = 0, min_h = 10000;
+    uint64_t best = 0, worst = 0;
+
+    for (const auto& kv : patches) {
+        avg_h += kv.second.health;
+        avg_t += kv.second.trust;
+        if (kv.second.health > max_h) { max_h = kv.second.health; best = kv.first; }
+        if (kv.second.health < min_h) { min_h = kv.second.health; worst = kv.first; }
+    }
+    avg_h /= patches.size();
+    avg_t /= patches.size();
+
+    return "Health: " + std::to_string((int)avg_h) + " | Trust: " + std::to_string((int)avg_t) +
+           " | P:" + std::to_string(patches.size()) +
+           " | Best:" + std::to_string(best).substr(0,6) + "(" + std::to_string(max_h) + ")" +
+           " | Worst:" + std::to_string(worst).substr(0,6) + "(" + std::to_string(min_h) + ")";
+}
+
+// ====================== POW ======================
+constexpr size_t MEMORY_SIZE = 32ull * 1024 * 1024;
+constexpr int ITERATIONS = 95;
+constexpr uint32_t TARGET = 1u << 22;
+
+std::vector<uint8_t> scratchpad(MEMORY_SIZE);
+std::atomic<uint64_t> total_hashes{0};
+
+void init_memory() {
+    std::cout << "Инициализация памяти...\n";
+    for (size_t i = 0; i < MEMORY_SIZE; i += 32) {
+        uint64_t val = i * 0x9E3779B97F4A7C15ULL;
+        auto h = sha256::hash(&val, 8);
+        std::memcpy(scratchpad.data() + i, h.data(), 32);
+    }
+}
+
+uint32_t evaluate(uint32_t nonce, uint32_t height, uint64_t patch_id) {
+    total_hashes.fetch_add(1, std::memory_order_relaxed);
+    uint64_t state = (uint64_t)nonce ^ patch_id ^ height;
+
+    for (int i = 0; i < ITERATIONS; ++i) {
+        uint64_t addr = (state ^ (uint64_t(i) * 0x517CC1B727220A95ULL)) & (MEMORY_SIZE - 8);
+        uint64_t mem = *reinterpret_cast<const uint64_t*>(scratchpad.data() + addr);
+
+        state ^= mem;
+        state *= 0x2545F4914F6CDD1DULL;
+
+        if (i % 12 == 0) state ^= ((state << 32) | (state >> 32));
+        if (i % 6 == 0) *reinterpret_cast<uint64_t*>(scratchpad.data() + addr) = state;
+    }
+
+    uint8_t data[8];
+    std::memcpy(data, &nonce, 4);
+    std::memcpy(data + 4, &height, 4);
+    auto digest = sha256::hash(data, 8);
+    return (digest[0] << 24) | (digest[1] << 16) | (digest[2] << 8) | digest[3];
+}
+
+void miner(int thread_id) {
+    std::mt19937_64 rng(std::random_device{}() ^ thread_id);
+    uint64_t patch_id = std::chrono::steady_clock::now().time_since_epoch().count() + thread_id * 100000ULL;
+
+    dois.register_patch(patch_id);
+
+    while (mining_active) {
+        uint32_t nonce = rng();
+        uint32_t height = 10000;
+
+        uint32_t result = evaluate(nonce, height, patch_id);
+
+        if (result < TARGET) {
+            if (dois.should_accept_block(patch_id)) {
+                std::cout << "\n🚀 BLOCK ACCEPTED! Thread " << thread_id << " | Patch " << patch_id << "\n";
+            } else {
+                std::cout << "⚠️ BLOCK REJECTED (Patch " << patch_id << ")\n";
+            }
+        }
+
+        if (rng() % 2400 < 32) {                     // \~1.3%
+            uint64_t other = patch_id ^ (rng() % 0x1FFFFFULL);
+            dois.decouple(patch_id, other);
+        }
+    }
+}
+
+// ====================== MAIN ======================
+int main() {
+    std::signal(SIGINT, [](int){ mining_active = false; });
+
+    std::cout << "=========================================\n";
+    std::cout << "     AETHER v38 - SOCIAL DOIS\n";
+    std::cout << "=========================================\n\n";
+
+    srand(time(nullptr));
+    init_memory();
+
+    const int THREADS = 8;
+    std::vector<std::thread> threads;
+    for (int i = 0; i < THREADS; ++i)
+        threads.emplace_back(miner, i);
+
+    auto start = std::chrono::steady_clock::now();
+
+    while (mining_active) {
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+        double hr = total_hashes.load() / elapsed / 1000.0;
+
+        std::cout << "[" << (int)elapsed << "s] Hashrate: " 
+                  << std::fixed << std::setprecision(1) << hr 
+                  << " kH/s | " << dois.get_status() << "\n";
+    }
+
+    std::cout << "\nОстановка...\n";
+    for (auto& t : threads) if (t.joinable()) t.join();
+    return 0;
+}
